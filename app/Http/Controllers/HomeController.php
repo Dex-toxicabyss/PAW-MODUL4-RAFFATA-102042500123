@@ -12,16 +12,63 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        // TODO 3: Lengkapi logika index():
-        // 1. Buat query pencarian berdasarkan judul, penulis, atau penerbit jika ada input 'search'
-        // 2. Tambahkan filter penerbit dan filter ketersediaan stok jika ada input 'penerbit' / 'status'
-        // 3. Tambahkan pengurutan data berdasarkan input 'sort' (judul, tahun, stok, default: latest)
-        // 4. Lakukan paginasi 8 data dengan withQueryString()
-        // 5. Ambil list penerbit unik untuk opsi dropdown filter
-        // 6. Return view 'home' dengan data buku dan list penerbit
+        $search = $request->input('search');
+        $penerbit = $request->input('penerbit');
+        $status = $request->input('status');
+        $sort = $request->input('sort');
 
-        $buku = Buku::paginate(8);
-        $listPenerbit = collect();
+        $query = Buku::query()
+            // 1. Pencarian berdasarkan judul, penulis, atau penerbit
+            ->when($search, function ($q, $search) {
+                return $q->where(function ($subQuery) use ($search) {
+                    $subQuery->where('judul', 'like', "%{$search}%")
+                             ->orWhere('penulis', 'like', "%{$search}%")
+                             ->orWhere('penerbit', 'like', "%{$search}%");
+                });
+            })
+            // 2. Filter penerbit
+            ->when($penerbit, function ($q, $penerbit) {
+                return $q->where('penerbit', $penerbit);
+            })
+            // 3. Filter ketersediaan stok
+            ->when($status, function ($q, $status) {
+                if ($status === 'tersedia') {
+                    return $q->where('stok', '>', 0);
+                } elseif ($status === 'habis') {
+                    return $q->where('stok', '<=', 0);
+                }
+            });
+
+        // 4. Pengurutan data berdasarkan input 'sort'
+        switch ($sort) {
+            case 'judul_asc':
+                $query->orderBy('judul', 'asc');
+                break;
+            case 'judul_desc':
+                $query->orderBy('judul', 'desc');
+                break;
+            case 'tahun_desc':
+                $query->orderBy('tahun_terbit', 'desc');
+                break;
+            case 'tahun_asc':
+                $query->orderBy('tahun_terbit', 'asc');
+                break;
+            case 'stok_desc':
+                $query->orderBy('stok', 'desc');
+                break;
+            default:
+                $query->latest();
+                break;
+        }
+
+        // 5. Paginasi dengan mempertahankan query string
+        $buku = $query->paginate(8)->withQueryString();
+
+        // 6. Ambil list penerbit unik untuk opsi dropdown filter
+        $listPenerbit = Buku::select('penerbit')
+            ->distinct()
+            ->orderBy('penerbit', 'asc')
+            ->pluck('penerbit');
 
         return view('home', compact('buku', 'listPenerbit'));
     }
@@ -31,7 +78,6 @@ class HomeController extends Controller
      */
     public function show(Buku $buku)
     {
-        // TODO 3: Kembalikan view 'home_show' membawa data $buku
         return view('home_show', compact('buku'));
     }
 }
