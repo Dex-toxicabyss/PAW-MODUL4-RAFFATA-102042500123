@@ -317,4 +317,40 @@ class SistemPeminjamanBukuTest extends TestCase
         // Pastikan stok TIDAK bertambah dua kali (tetap 3)
         $this->assertEquals(3, $buku->fresh()->stok);
     }
+
+    /**
+     * Test 5: Modul 4 - Multi-Role Authorization (RoleMiddleware) & Public Catalog
+     */
+    public function test_mahasiswa_cannot_access_admin_routes(): void
+    {
+        $mahasiswa = User::create([
+            'name' => 'Rio Mahasiswa',
+            'email' => 'mahasiswa@telkomlibrary.ac.id',
+            'password' => Hash::make('mahasiswa123'),
+            'role' => 'mahasiswa',
+        ]);
+
+        $response = $this->actingAs($mahasiswa)->get('/buku');
+        $response->assertRedirect(route('home'));
+        $response->assertSessionHas('error');
+    }
+
+    public function test_public_catalog_search_and_detail_page_are_accessible(): void
+    {
+        $buku = Buku::create([
+            'judul' => 'Pemrograman Laravel Lanjutan',
+            'penulis' => 'Raffata Aletama',
+            'penerbit' => 'Telkom Press',
+            'tahun_terbit' => 2026,
+            'stok' => 4,
+        ]);
+
+        $this->get('/?search=Laravel&status=tersedia')
+            ->assertStatus(200)
+            ->assertSee('Pemrograman Laravel Lanjutan');
+
+        $this->get("/katalog/{$buku->id}")
+            ->assertStatus(200)
+            ->assertSee('Raffata Aletama');
+    }
 }
