@@ -66,7 +66,7 @@ class SistemPeminjamanBukuTest extends TestCase
     {
         $response = $this->actingAs($this->admin)->post('/logout');
 
-        $response->assertRedirect('/login');
+        $response->assertRedirect(route('home'));
         $this->assertGuest();
     }
 
