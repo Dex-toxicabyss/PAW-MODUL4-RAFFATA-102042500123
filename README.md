@@ -14,10 +14,10 @@
 
 <p>
   <a href="#-identitas-praktikan">Identitas</a> •
+  <a href="#-struktur-repositori">Struktur</a> •
   <a href="#-modul-4--telkomlibrary">Modul 4 (TelkomLibrary)</a> •
   <a href="#-jurnal-4--celoe-lms">Jurnal 4 (CeLOE LMS)</a> •
-  <a href="#-quick-start">Quick Start</a> •
-  <a href="#-galeri-antarmuka">Screenshots</a>
+  <a href="#-quick-start">Quick Start</a>
 </p>
 
 </div>
@@ -40,7 +40,6 @@
 PAW-MODUL4-RAFFATA-102042500123/
 ├── PAW_MODUL4_RAFFATA_102042500123/   # Modul 4: TelkomLibrary (RBAC, Upload Cover, Search & Pagination)
 ├── PAW_JURNAL4_RAFFATA_102042500123/  # Jurnal 4: CeLOE LMS (Middleware, Filter/Sort, Grading, CSV Export)
-├── screenshots/                       # Dokumentasi tampilan aplikasi (modul4/ & jurnal4/)
 ├── LICENSE                            # Lisensi MIT
 └── README.md                          # Dokumentasi utama repositori
 ```
@@ -140,38 +139,6 @@ php artisan serve
 | :--- | :--- | :--- | :--- |
 | **Dosen** | `dosen@celoe.test` | `dosen123` | `198501012015041001` |
 | **Mahasiswa** | `mahasiswa@celoe.test` | `mahasiswa123` | `1301210001` |
-
----
-
-## 📸 Galeri Antarmuka
-
-<details>
-<summary><b>📂 Klik untuk melihat Screenshot Modul 4 (TelkomLibrary)</b></summary>
-<br />
-
-| Fitur / Skenario Uji | Preview |
-| :--- | :--- |
-| **Katalog Publik (`/` — Search, Filter, Pagination)** | ![Katalog Publik](screenshots/modul4/01-katalog-publik.png) |
-| **Detail Buku Publik (`/katalog/{id}`)** | ![Detail Buku](screenshots/modul4/02-detail-buku-publik.png) |
-| **Daftar Buku Admin (`/buku` — Thumbnail Sampul)** | ![Daftar Buku Admin](screenshots/modul4/03-daftar-buku-admin.png) |
-| **Form Upload & Preview Sampul** | ![Upload Sampul](screenshots/modul4/04-upload-sampul.png) |
-| **Uji `RoleMiddleware` (Mahasiswa Akses `/buku`)** | ![Uji RoleMiddleware](screenshots/modul4/05-uji-role-middleware.png) |
-
-</details>
-
-<details>
-<summary><b>📂 Klik untuk melihat Screenshot Jurnal 4 (CeLOE LMS)</b></summary>
-<br />
-
-| Fitur / Skenario Uji | Preview |
-| :--- | :--- |
-| **Katalog Mata Kuliah (`/courses` — Filter & Sort)** | ![Katalog Mata Kuliah](screenshots/jurnal4/01-katalog-matakuliah.png) |
-| **Uji `RoleMiddleware` (`403 Forbidden`)** | ![Uji 403](screenshots/jurnal4/02-uji-role-403.png) |
-| **Halaman Submissions Dosen (Statistik & Form Nilai)** | ![Halaman Submissions](screenshots/jurnal4/03-halaman-submissions.png) |
-| **Hasil Penilaian (`Lulus` / `Perlu Perbaikan`)** | ![Hasil Grading](screenshots/jurnal4/04-hasil-grading.png) |
-| **Hasil Ekspor Rekap Nilai CSV** | ![Ekspor CSV](screenshots/jurnal4/05-ekspor-csv.png) |
-
-</details>
 
 ---
 
